@@ -3,27 +3,32 @@ import json
 import torch
 import random
 import numpy as np
-from torchvision import transforms
+from torchvision import datasets, transforms
 from torch.utils.data import Dataset
 
 class task1_Dataset_MNIST(Dataset):
     """
     Dataset class for task 1 : sample and test images, with sequence of noise images in between
     """
-    def __init__(self, data_processing_fun, data_args, delay_length=5, p=0.5, transform=None, empty_image_value=0):
+    def __init__(self, is_train_data, data_processing_fun, data_args, delay_length=5, p=0.5, transform=None, empty_image_value=0):
         """
         Initialize the dataset class
         """
+        # self.data_processing_fun = data_processing_fun
+        # self.data_args = data_args
         # self.data = data
         # self.labels = labels
+                
+        self.transform = transform or transform or self.default_transform()
+        # datasets.MNIST('./data/MNIST/raw', train=is_train_data, download=True, transform=self.transform)
+        
         self.data, self.labels = self.load_data_and_labels(data_processing_fun, data_args)
-        self.num_classes = len(set(self.labels))
 
         self.delay_length = delay_length
         self.p = p
-        self.transform = transform or transform or self.default_transform()
-        self.empty_image = np.full((1, 28, 28), fill_value=empty_image_value, dtype=np.uint8)  
-        
+        self.empty_image = np.full((1, 28, 28), fill_value=empty_image_value, dtype=np.uint8)
+        self.num_classes = len(set(self.labels))
+
     def load_data_and_labels(self, data_processing_fun, data_args):
         """
         Load data and labels using the provided loader functions and arguments

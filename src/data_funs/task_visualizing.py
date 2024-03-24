@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def show_sequence_task1_MNIST(sequence, class_labels, repeat_labels):
+def show_image_sequence(sequence, class_labels, repeat_labels):
     # sequence shape: [sequence_length, channels, height, width]
     # class_labels shape: [sequence_length]
     # repeat_labels shape: [sequence_length]
